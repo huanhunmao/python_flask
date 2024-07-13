@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from send_google_email import send_email
 
 app = Flask(__name__)
 
@@ -39,8 +40,10 @@ def index():
         )
         db.session.add(form)
         db.session.commit()
-        flash(f'{first_name}, Your form was submitted successfully!','success')
+        message = f'{first_name}, Your form was submitted successfully!'
+        flash(message ,'success')
 
+        send_email(message)
     return render_template('index.html')
 
 
